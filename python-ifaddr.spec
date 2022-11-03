@@ -1,6 +1,6 @@
 Summary:	Python library that allows you to find all the IP addresses of the computer
 Name:		python-ifaddr
-Version:	0.1.7
+Version:	0.2.0
 Release:	1
 Group:		Development/Python
 License:	GPLv2+
