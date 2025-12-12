@@ -1,37 +1,41 @@
-Summary:	Python library that allows you to find all the IP addresses of the computer
+%define module ifaddr
+
 Name:		python-ifaddr
+Summary:	Python library that allows you to find all the IP addresses of the computer
 Version:	0.2.0
 Release:	3
 Group:		Development/Python
-License:	GPLv2+
+License:	MIT
 Url:		https://pypi.org/project/ifaddr/
-Source0:	https://files.pythonhosted.org/packages/source/i/ifaddr/ifaddr-%{version}.tar.gz
-BuildRequires:	python3dist(setuptools)
+Source0:	https://files.pythonhosted.org/packages/source/i/%{module}/%{module}-%{version}.tar.gz
+BuildSystem:	python
 BuildArch:	noarch
+
+BuildRequires:	pkgconfig
+BuildRequires:	pkgconfig(python)
+BuildRequires:	python%{pyver}dist(setuptools)
 
 %description
 ifaddr is a small Python library that allows you to find all the IP addresses of the computer.
 
-
-%files
-%{py_puresitedir}/ifaddr
-%{py_puresitedir}/ifaddr*.egg-info
-
-#------------------------------------------------------------
 %prep
-%autosetup -p1 -n ifaddr-%{version}
+%autosetup -p1 -n %{module}-%{version}
+# Remove bundled egg-info
+rm -rf %{module}.egg-info
 
 %build
-%set_build_flags
-
 export LDFLAGS="%{ldflags} -lpython%{py_ver}"
 %py_build
 
 %install
-%{__python} setup.py \
-	install \
-	--root="%{buildroot}" --skip-build --optimize=1
+%py_install
 
 %check
 %{__python} setup.py \
 	check
+
+%files
+%doc README.rst
+%license LICENSE.txt
+%{python_sitelib}/%{module}
+%{python_sitelib}/%{module}-%{version}.dist-info
